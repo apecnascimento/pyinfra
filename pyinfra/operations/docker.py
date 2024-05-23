@@ -56,14 +56,14 @@ def container(
         docker.container(
             name="Stop Nginx container",
             container="nginx",
-            start=False
+            start=False,
         )
 
         # Start a container
         docker.container(
             name="Start Nginx container",
             container="nginx",
-            start=True
+            start=True,
         )
     """
 
@@ -115,4 +115,45 @@ def container(
             resource="container",
             command="remove",
             container=container,
+        )
+
+
+@operation()
+def image(image, present=True):
+    """
+    Manage Docker images
+    + image: Image and tag ex: nginx:alpine
+    + present: whether the Docker image should be exist
+
+    **Examples:**
+
+    . code:: python
+
+        # Pull a Docker image
+        docker.image(
+            name="Pull nginx image",
+            image="nginx:alpine",
+            present=True,
+        )
+
+        # Remove a Docker image
+        docker.image(
+            name="Remove nginx image",
+            image:"nginx:image",
+            present=False,
+        )
+    """
+
+    if present:
+        yield handle_docker(
+            resource="image",
+            command="pull",
+            image=image,
+        )
+
+    else:
+        yield handle_docker(
+            resource="image",
+            command="remove",
+            image=image,
         )
