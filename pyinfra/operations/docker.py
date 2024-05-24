@@ -3,7 +3,7 @@ Manager Docker Containers, Volumes and Networks
 """
 from pyinfra import host
 from pyinfra.api import operation
-from pyinfra.facts.docker import DockerContainer
+from pyinfra.facts.docker import DockerContainer, DockerVolume
 
 from .util.docker import handle_docker
 
@@ -56,7 +56,7 @@ def container(
         docker.container(
             name="Stop Nginx container",
             container="nginx",
-            start=False,
+            start=False,`
         )
 
         # Start a container
@@ -156,4 +156,54 @@ def image(image, present=True):
             resource="image",
             command="remove",
             image=image,
+        )
+
+
+@operation()
+def volume(volume, driver="", labels=[], present=True):
+    """
+    Manage Docker volumes
+    + volume_name: Image name
+    + driver: Docker volume storage driver
+    + labels: Label list to attach in the volume
+    + present: whether the Docker volume should exist
+
+    **Examples:**
+
+    . code:: python
+
+        # Create a Docker volume
+        docker.volume(
+            name="Create nginx volume",
+            volume_name="nginx_data",
+            present=True
+        )
+    """
+
+    existent_volume = next(iter(host.get_fact(DockerVolume, object_id=volume)), None)
+
+    if present:
+
+        if existent_volume:
+            host.noop("Volume alredy exist!")
+            return
+
+        yield handle_docker(
+            resource="volume",
+            command="create",
+            volume=volume,
+            driver=driver,
+            labels=labels,
+            present=present,
+        )
+
+    else:
+        if existent_volume is None:
+            host.noop("There is no {0} volume!".format(volume))
+            return
+
+        yield handle_docker(
+            resource="volume",
+            command="remove",
+            volume=volume,
         )
