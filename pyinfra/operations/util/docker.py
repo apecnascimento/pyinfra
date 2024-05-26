@@ -121,6 +121,7 @@ def _create_network(**kwargs):
 
     for label in kwargs["labels"]:
         command.append("--label {0}".format(label))
+    return " ".join(command)
 
 
 def _remove_network(**kwargs):

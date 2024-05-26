@@ -3,7 +3,7 @@ Manager Docker Containers, Volumes and Networks
 """
 from pyinfra import host
 from pyinfra.api import operation
-from pyinfra.facts.docker import DockerContainer, DockerVolume, DockerNetwork
+from pyinfra.facts.docker import DockerContainers, DockerVolume, DockerNetwork
 
 from .util.docker import handle_docker
 
@@ -45,7 +45,6 @@ def container(
             image="nginx:alpine",
             ports=["80:80"],
             present=True,
-            detach=True,
             force=True,
             networks=["proxy", "services"],
             volumes=["nginx_data:/usr/share/nginx/html"],
@@ -67,7 +66,7 @@ def container(
         )
     """
 
-    existent_container = next(iter(host.get_fact(DockerContainer, object_id=container)), None)
+    existent_container = [c for c in host.get_fact(DockerContainers) if c["Names" == container]]
 
     if force:
         if existent_container:
