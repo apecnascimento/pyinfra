@@ -3,7 +3,7 @@ Manager Docker Containers, Volumes and Networks
 """
 from pyinfra import host
 from pyinfra.api import operation
-from pyinfra.facts.docker import DockerContainers, DockerVolume, DockerNetwork
+from pyinfra.facts.docker import DockerContainers, DockerVolumes, DockerNetworks
 
 from .util.docker import handle_docker
 
@@ -117,7 +117,7 @@ def container(
         )
 
 
-@operation()
+@operation(is_idempotent=False)
 def image(image, present=True):
     """
     Manage Docker images
@@ -179,7 +179,7 @@ def volume(volume, driver="", labels=[], present=True):
         )
     """
 
-    existent_volume = next(iter(host.get_fact(DockerVolume, object_id=volume)), None)
+    existent_volume = [v for v in host.get_fact(DockerVolumes) if v["Name"]]
 
     if present:
 
@@ -252,7 +252,7 @@ def network(
             present=True,
         )
     """
-    existent_network = next(iter(host.get_fact(DockerNetwork, object_id=network)), None)
+    existent_network = [n for n in host.get_fact(DockerNetworks) if n["name"] == network]
 
     if present:
         if existent_network:
