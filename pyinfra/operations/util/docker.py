@@ -52,6 +52,23 @@ def _remove_image(**kwargs):
     return "docker image rm {0}".format(kwargs["image"])
 
 
+def _prune_command(**kwargs):
+    command = ["docker system prune"]
+
+    if kwargs["all"]:
+        command.append("-a")
+
+    if kwargs["filter"] != "":
+        command.append("--filter={0}".format(kwargs["filter"]))
+
+    if kwargs["volumes"]:
+        command.append("--volumes")
+
+    command.append("-f")
+
+    return " ".join(command)
+
+
 def _create_volume(**kwargs):
     command = []
     command.append("docker volume create {0}".format(kwargs["volume"]))
@@ -133,11 +150,16 @@ def handle_docker(resource, command, **kwargs):
         "remove": _remove_network,
     }
 
+    system_commands = {
+        "prune": _prune_command,
+    }
+
     docker_commands = {
         "container": container_commands,
         "image": image_commands,
         "volume": volume_commands,
         "network": network_commands,
+        "system": system_commands,
     }
 
     return docker_commands[resource][command](**kwargs)

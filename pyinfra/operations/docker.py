@@ -288,3 +288,48 @@ def network(
             command="create",
             network=network,
         )
+
+
+@operation(is_idempotent=False)
+def prune(
+    all=False,
+    volume=False,
+    filter="",
+):
+    """
+    Execute a docker system prune
+    + all: Remove all unused images not just dangling ones
+    + volumes: Prune anonymous volumes
+    + filter: Provide filter values (e.g. "label=<key>=<value>" or "until=24h")
+
+    **Examples:**
+
+    . code:: python
+
+        # Remove dangling images
+        docker.prune(
+            name="remove dangling images",
+        )
+
+        # Remove all images and volumes
+        docker.prune(
+            name="Remove all images and volumes",
+            all=True,
+            volumes=True,
+        )
+
+        # Remove images older than 90 days
+        docker.prune(
+            name="Remove unused older than 90 days",
+            filter="until=2160h"
+        )
+
+    """
+
+    yield handle_docker(
+        resource="system",
+        command="prune",
+        all=all,
+        volume=volume,
+        filter=filter,
+    )
