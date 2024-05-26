@@ -66,7 +66,7 @@ def container(
         )
     """
 
-    existent_container = [c for c in host.get_fact(DockerContainers) if c["Names" == container]]
+    existent_container = [c for c in host.get_fact(DockerContainers) if container in c["Name"]]
 
     if force:
         if existent_container:
@@ -94,7 +94,7 @@ def container(
             )
 
     if existent_container and start:
-        if existent_container["State"]["Status="] != "running":
+        if existent_container[0]["State"]["Status"] != "running":
             yield handle_docker(
                 resource="container",
                 command="start",
@@ -102,7 +102,7 @@ def container(
             )
 
     if existent_container and not start:
-        if existent_container["State"]["Status"] == "running":
+        if existent_container[0]["State"]["Status"] == "running":
             yield handle_docker(
                 resource="container",
                 command="stop",
@@ -179,7 +179,7 @@ def volume(volume, driver="", labels=[], present=True):
         )
     """
 
-    existent_volume = [v for v in host.get_fact(DockerVolumes) if v["Name"]]
+    existent_volume = [v for v in host.get_fact(DockerVolumes) if v["Name"] == volume]
 
     if present:
 
@@ -252,7 +252,7 @@ def network(
             present=True,
         )
     """
-    existent_network = [n for n in host.get_fact(DockerNetworks) if n["name"] == network]
+    existent_network = [n for n in host.get_fact(DockerNetworks) if n["Name"] == network]
 
     if present:
         if existent_network:
