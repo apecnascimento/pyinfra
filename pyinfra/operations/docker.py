@@ -162,7 +162,7 @@ def image(image, present=True):
 def volume(volume, driver="", labels=[], present=True):
     """
     Manage Docker volumes
-    + volume_name: Image name
+    + volume: Volume name
     + driver: Docker volume storage driver
     + labels: Label list to attach in the volume
     + present: whether the Docker volume should exist
@@ -174,7 +174,7 @@ def volume(volume, driver="", labels=[], present=True):
         # Create a Docker volume
         docker.volume(
             name="Create nginx volume",
-            volume_name="nginx_data",
+            volume="nginx_data",
             present=True
         )
     """

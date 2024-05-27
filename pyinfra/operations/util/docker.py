@@ -77,7 +77,7 @@ def _create_volume(**kwargs):
         command.append("-d {0}".format(kwargs["driver"]))
 
     for label in kwargs["labels"]:
-        command.append("--label {0}".format(kwargs[label]))
+        command.append("--label {0}".format(label))
 
     return " ".join(command)
 
