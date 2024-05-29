@@ -23,6 +23,7 @@ def container(
 ):
     """
     Manage Docker containers
+
     + container: name to identify the container
     + image: container image and tag ex: nginx:alpine
     + networks: network list to attach on container
@@ -36,7 +37,7 @@ def container(
 
     **Examples:**
 
-    . code:: python
+    .. code:: python
 
         # Run a container
         docker.container(
@@ -55,7 +56,7 @@ def container(
         docker.container(
             name="Stop Nginx container",
             container="nginx",
-            start=False,`
+            start=False,
         )
 
         # Start a container
@@ -121,12 +122,13 @@ def container(
 def image(image, present=True):
     """
     Manage Docker images
+
     + image: Image and tag ex: nginx:alpine
     + present: whether the Docker image should be exist
 
     **Examples:**
 
-    . code:: python
+    .. code:: python
 
         # Pull a Docker image
         docker.image(
@@ -162,6 +164,7 @@ def image(image, present=True):
 def volume(volume, driver="", labels=[], present=True):
     """
     Manage Docker volumes
+
     + volume: Volume name
     + driver: Docker volume storage driver
     + labels: Label list to attach in the volume
@@ -169,7 +172,7 @@ def volume(volume, driver="", labels=[], present=True):
 
     **Examples:**
 
-    . code:: python
+    .. code:: python
 
         # Create a Docker volume
         docker.volume(
@@ -226,6 +229,7 @@ def network(
 ):
     """
     Manage docker networks
+
     + network_name: Image name
     + driver: Container image and tag ex: nginx:alpine
     + gateway: IPv4 or IPv6 Gateway for the master subnet
@@ -242,7 +246,7 @@ def network(
 
     **Examples:**
 
-    . code:: python
+    .. code:: python
 
         # Create Docker network
         docker.network(
@@ -296,14 +300,15 @@ def prune(
     filter="",
 ):
     """
-    Execute a docker system prune
+    Execute a docker system prune.
+
     + all: Remove all unused images not just dangling ones
     + volumes: Prune anonymous volumes
     + filter: Provide filter values (e.g. "label=<key>=<value>" or "until=24h")
 
     **Examples:**
 
-    . code:: python
+    .. code:: python
 
         # Remove dangling images
         docker.prune(
@@ -322,7 +327,6 @@ def prune(
             name="Remove unused older than 90 days",
             filter="until=2160h"
         )
-
     """
 
     yield handle_docker(
