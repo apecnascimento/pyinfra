@@ -1,0 +1,13 @@
+{
+    "kwargs": {
+        "network": "nginx",
+        "gateway": "192.168.0.1",
+        "present": true
+    },
+    "facts": {
+        "docker.DockerNetworks": []
+    },
+    "commands": [
+        "docker network create nginx --gateway 192.168.0.1"
+    ]
+}
