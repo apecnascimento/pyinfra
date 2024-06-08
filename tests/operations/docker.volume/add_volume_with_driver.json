@@ -1,0 +1,13 @@
+{
+    "kwargs": {
+        "volume": "nginx_volume",
+        "driver": "ceph",
+        "present": true
+    },
+    "facts": {
+        "docker.DockerVolumes": []
+    },
+    "commands": [
+        "docker volume create nginx_volume -d ceph"
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "kwargs": {
+        "volume": "nginx_volume",
+        "present": true
+    },
+    "facts": {
+        "docker.DockerVolumes": []
+    },
+    "commands": [
+        "docker volume create nginx_volume"
+    ]
+}
