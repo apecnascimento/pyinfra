@@ -13,10 +13,10 @@ from .util.docker import handle_docker
 def container(
     container,
     image="",
-    ports=[],
-    networks=[],
-    volumes=[],
-    env_vars=[],
+    ports=None,
+    networks=None,
+    volumes=None,
+    env_vars=None,
     pull_always=False,
     present=True,
     force=False,
@@ -162,7 +162,7 @@ def image(image, present=True):
 
 
 @operation()
-def volume(volume, driver="", labels=[], present=True):
+def volume(volume, driver="", labels=None, present=True):
     """
     Manage Docker volumes
 
@@ -221,9 +221,9 @@ def network(
     ipam_driver="",
     subnet="",
     scope="",
-    opts=[],
-    ipam_opts=[],
-    labels=[],
+    opts=None,
+    ipam_opts=None,
+    labels=None,
     ingress=False,
     attachable=False,
     present=True,

@@ -4,21 +4,26 @@ from pyinfra.api import OperationError
 def _create_container(**kwargs):
     command = []
 
+    networks = kwargs["networks"] if kwargs["networks"] else []
+    ports = kwargs["ports"] if kwargs["ports"] else []
+    volumes = kwargs["volumes"] if kwargs["volumes"] else []
+    env_vars = kwargs["env_vars"] if kwargs["env_vars"] else []
+
     if kwargs["image"] == "":
         raise OperationError("missing 1 required argument: 'image'")
 
     command.append("docker container create --name {0}".format(kwargs["container"]))
 
-    for network in kwargs["networks"]:
+    for network in networks:
         command.append("--network {0}".format(network))
 
-    for port in kwargs["ports"]:
+    for port in ports:
         command.append("-p {0}".format(port))
 
-    for volume in kwargs["volumes"]:
+    for volume in volumes:
         command.append("-v {0}".format(volume))
 
-    for env_var in kwargs["env_vars"]:
+    for env_var in env_vars:
         command.append("-e {0}".format(env_var))
 
     if kwargs["pull_always"]:
@@ -71,12 +76,14 @@ def _prune_command(**kwargs):
 
 def _create_volume(**kwargs):
     command = []
+    labels = kwargs["labels"] if kwargs["labels"] else []
+
     command.append("docker volume create {0}".format(kwargs["volume"]))
 
     if kwargs["driver"] != "":
         command.append("-d {0}".format(kwargs["driver"]))
 
-    for label in kwargs["labels"]:
+    for label in labels:
         command.append("--label {0}".format(label))
 
     return " ".join(command)
@@ -88,6 +95,10 @@ def _remove_volume(**kwargs):
 
 def _create_network(**kwargs):
     command = []
+    opts = kwargs["opts"] if kwargs["opts"] else []
+    ipam_opts = kwargs["ipam_opts"] if kwargs["ipam_opts"] else []
+    labels = kwargs["labels"] if kwargs["labels"] else []
+
     command.append("docker network create {0}".format(kwargs["network"]))
     if kwargs["driver"] != "":
         command.append("-d {0}".format(kwargs["driver"]))
@@ -113,13 +124,13 @@ def _create_network(**kwargs):
     if kwargs["attachable"]:
         command.append("--attachable")
 
-    for opt in kwargs["opts"]:
+    for opt in opts:
         command.append("--opt {0}".format(opt))
 
-    for opt in kwargs["ipam_opts"]:
+    for opt in ipam_opts:
         command.append("--ipam-opt {0}".format(opt))
 
-    for label in kwargs["labels"]:
+    for label in labels:
         command.append("--label {0}".format(label))
     return " ".join(command)
 
