@@ -4,7 +4,7 @@ Manager Docker Containers, Volumes and Networks
 
 from pyinfra import host
 from pyinfra.api import operation
-from pyinfra.facts.docker import DockerContainer, DockerNetworks, DockerVolume
+from pyinfra.facts.docker import DockerContainer, DockerNetwork, DockerVolume
 
 from .util.docker import handle_docker
 
@@ -257,7 +257,7 @@ def network(
             present=True,
         )
     """
-    existent_network = [n for n in host.get_fact(DockerNetworks) if n["Name"] == network]
+    existent_network = host.get_fact(DockerNetwork, object_id=network)
 
     if present:
         if existent_network:
