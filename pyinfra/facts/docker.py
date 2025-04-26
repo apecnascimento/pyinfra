@@ -72,6 +72,14 @@ class DockerNetworks(DockerFactBase):
         return "docker network inspect `docker network ls -q`"
 
 
+class DockerNodes(DockerFactBase):
+    """
+    Returns ``docker inspect`` output for all Docker Swarm nodes.
+    """
+    @override
+    def command(self) -> str:
+        return "docker node inspect `docker node ls -q`"
+
 # Single Docker objects
 #
 
@@ -126,6 +134,14 @@ class DockerVolume(DockerSingleMixin):
 
     docker_type = "volume"
 
+
+class DockerNode(DockerSingleMixin):
+    """
+    Returns ``docker inspect`` output for a single Docker Swarm node.
+    """
+    docker_type = "node"
+
+
 class DockerSwarmCA(DockerFactBase):
     """
     Returns the current swarm CA certificate.
@@ -134,12 +150,3 @@ class DockerSwarmCA(DockerFactBase):
     @override
     def command(self) -> str:
         return "docker swarm ca"
-
-class DockerSwarmJoinToken(DockerFactBase):
-    """
-    Returns swarm join token to worker or manager node
-    """
-
-    @override
-    def command(self, node_type) -> str:
-        return "docker swarm join-token -q {0}".format(node_type)
