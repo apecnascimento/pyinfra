@@ -125,3 +125,12 @@ class DockerVolume(DockerSingleMixin):
     """
 
     docker_type = "volume"
+
+class DockerSwarmCA(DockerFactBase):
+    """
+    Returns the current swarm CA certificate.
+    """
+
+    @override
+    def command(self) -> str:
+        return "docker swarm ca"
