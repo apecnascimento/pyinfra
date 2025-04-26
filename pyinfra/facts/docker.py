@@ -134,3 +134,12 @@ class DockerSwarmCA(DockerFactBase):
     @override
     def command(self) -> str:
         return "docker swarm ca"
+
+class DockerSwarmJoinToken(DockerFactBase):
+    """
+    Returns swarm join token to worker or manager node
+    """
+
+    @override
+    def command(self, node_type) -> str:
+        return "docker swarm join-token -q {0}".format(node_type)
